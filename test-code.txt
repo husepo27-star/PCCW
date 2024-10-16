@@ -1,0 +1,84 @@
+'TEST CASE 1: POSITIVE LOGIN TEST
+
+'---Open page
+SystemUtil.Run "C:\Program Files\Google\Chrome\Application\chrome.exe", “https://practicetestautomation.com/practice-test-login”
+
+'---Type username student into Username field
+Browser("Practice Test Automation").Page("Login").WebEdit("Username").Set "student"
+
+'---Type password Password123 into Password field
+Browser("Practice Test Automation").Page("Login").WebEdit("Password").Set "Password123"
+
+'---Click Submit button
+Browser("Practice Test Automation").Page("Login").WebButton("Submit").Click
+
+'---Verify new page URL contains practicetestautomation.com/logged-in-successfully/
+urlValue = Browser("Practice Test Automation").Page("Homepage").GetRoProperty("URL")
+
+If urlValue = "practicetestautomation.com/logged-in-successfully/" Then
+	Reporter.ReportEvent micPass, "URL validation","URL is correct"
+Else
+	Reporter.ReportEvent micFail, "URL validation","URL is NOT correct"
+End If
+
+'---Verify new page contains expected text ('Congratulations' or 'successfully logged in')
+If Browser("Practice Test Automation").Page("Homepage").WebElement("Logged In Successfully").Exist AND Browser("Practice Test Automation").Page("Homepage").WebElement("Congratulations student. You successfully logged in!").Exist Then
+	Reporter.ReportEvent micPass, "Homepage validation","Page contains expected text"
+Else
+	Reporter.ReportEvent micFail, "Homepage validation","Page DOESN'T contains expected text"
+End If
+
+'---Verify button Log out is displayed on the new page
+If Browser("Practice Test Automation").Page("Homepage").WebButton("Log out").Exist Then
+	Reporter.ReportEvent micPass, "Homepage validation","Log out button is displayed"
+Else
+	Reporter.ReportEvent micFail, "Homepage validation","Log out button is NOT displayed"
+End If
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+'TEST CASE 2: NEGATIVE USERNAME TEST
+
+'---Open page
+SystemUtil.Run "C:\Program Files\Google\Chrome\Application\chrome.exe", “https://practicetestautomation.com/practice-test-login”
+
+'---Type username incorrectUser into Username field
+Browser("Practice Test Automation").Page("Login").WebEdit("Username").Set "incorrectUser"
+
+'---Type password Password123 into Password field
+Browser("Practice Test Automation").Page("Login").WebEdit("Password").Set "Password123"
+
+'---Click Submit button
+Browser("Practice Test Automation").Page("Login").WebButton("Submit").Click
+
+'---Verify error message is displayed
+'---Verify error message text is Your username is invalid!
+If Browser("Practice Test Automation").Page("Login").WebElement("Your username is invalid!").Exist Then
+	Reporter.ReportEvent micPass, "Login validation","Error message text Your username is invalid! is displayed"
+Else
+	Reporter.ReportEvent micFail, "Login validation","Error message text Your username is invalid! is NOT displayed"
+End If
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+'TEST CASE 3: NEGATIVE PASSWORD TEST
+
+'---Open page
+SystemUtil.Run "C:\Program Files\Google\Chrome\Application\chrome.exe", “https://practicetestautomation.com/practice-test-login”
+
+'---Type username student into Username field
+Browser("Practice Test Automation").Page("Login").WebEdit("Username").Set "student"
+
+'---Type password incorrectPassword into Password field
+Browser("Practice Test Automation").Page("Login").WebEdit("Password").Set "incorrectPassword"
+
+'---Click Submit button
+Browser("Practice Test Automation").Page("Login").WebButton("Submit").Click
+
+'---Verify error message is displayed
+'---Verify error message text is Your password is invalid!
+If Browser("Practice Test Automation").Page("Login").WebElement("Your password is invalid!").Exist Then
+	Reporter.ReportEvent micPass, "Login validation","Error message text Your password is invalid! is displayed"
+Else
+	Reporter.ReportEvent micFail, "Login validation","Error message text Your password is invalid! is NOT displayed"
+End If
